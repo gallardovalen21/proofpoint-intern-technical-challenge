@@ -1,0 +1,16 @@
+Sistemas complejos requieren soluciones robustas. ¿Cómo procesar datos eficientemente? 
+La arquitectura define procesos; procesos generan datos; datos alimentan sistemas. 
+Implementar algoritmos implica entender lógica, pero entender lógica no garantiza 
+implementar eficiencia. 
+
+Ayer, programadores discutían sobre latencia. "Latencia degrada rendimiento", 
+afirmaba alguien. Otros preferían priorizar escalabilidad. Escalabilidad y latencia 
+son caras opuestas de una misma moneda tecnológica. 
+
+Saramago decía que caos es orden por descifrar. En computación, desorden 
+es entropía por gestionar. Gestionar entropía requiere memoria; memoria 
+optimiza rendimiento. Optimiza hoy, escala mañana.
+
+¿Es posible automatizar creatividad? Quizás automatizar procesos sea viable, 
+pero creatividad permanece humana. Humana, compleja, ineficiente... hermosa. 
+Datos, datos y más datos: combustible moderno para motores antiguos.
