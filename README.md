@@ -5,16 +5,18 @@ The project includes two Python exercises focused on text processing and data cl
 
 
 ## Project Structure
-EjercicioExtra/
-Contador_Palabras.py
-textoPrueba.txt
-
-EjercicioSeries/
-ejercicioB.py
-catalog.csv
-episodes_clean.csv
-report.md
-
+```
+.
+├── EjercicioExtra
+│   ├── Contador_Palabras.py
+│   └── textoPrueba.txt
+│
+└── EjercicioSeries
+    ├── ejercicioB.py
+    ├── catalog.csv
+    ├── episodes_clean.csv
+    └── report.md
+```
 # Exercise 1 — Word Frequency Analysis
 
 Located in **EjercicioExtra**
@@ -133,7 +135,17 @@ A data quality report that includes:
 
 It also explains the deduplication strategy used in the cleaning process.
 
+## How to Run
 
+### Exercise 1
+
+```bash
+python Contador_Palabras.py
+```
+### Exercise 2
+```
+python ejercicioB.py
+```
 ## Author
 
 **Valentin Alberto Gallardo Scaltriti**
