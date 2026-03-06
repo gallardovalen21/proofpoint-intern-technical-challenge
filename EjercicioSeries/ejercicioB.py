@@ -1,7 +1,7 @@
 archivo_texto= "./catalog.csv"
 from datetime import datetime
 
-def limpiar_datos_numericos(valor):
+def numero_invalido(valor):
     try:
         numero_float = float(valor)
         numero = int(numero_float)
@@ -11,7 +11,7 @@ def limpiar_datos_numericos(valor):
     except (ValueError, TypeError):
         return True
 
-def puntaje(episodio):
+def calcular_puntaje(episodio):
     resultado = 0
 
     if episodio[4] != "Unknown":
@@ -24,7 +24,7 @@ def puntaje(episodio):
         resultado += 1
     return resultado
 
-def validar_formatos_fecha(fecha_texto):
+def validar_fecha(fecha_texto):
     formatos = ["%Y-%m-%d", "%d/%m/%Y", "%m-%d-%Y", "%Y/%m/%d"]
     for fmt in formatos:
         try:
@@ -60,13 +60,13 @@ if __name__ == '__main__':
             columnas[0] = " ".join(columnas[0].strip().lower().split())
             serie_normalizada = columnas[0]
 
-            if columnas[1].strip() in valores_nulos or limpiar_datos_numericos(columnas[1]):
+            if columnas[1].strip() in valores_nulos or numero_invalido(columnas[1]):
                 columnas[1] = 0
                 corregidos += 1
             else:
                 columnas[1] = int(float(columnas[1]))
 
-            if columnas[2].strip() in valores_nulos or limpiar_datos_numericos(columnas[2]):
+            if columnas[2].strip() in valores_nulos or numero_invalido(columnas[2]):
                 columnas[2] = 0
                 corregidos += 1
             else:
@@ -78,7 +78,7 @@ if __name__ == '__main__':
             columnas[3] = " ".join(columnas[3].strip().lower().split())
             titulo_normalizado = columnas[3]
 
-            if not validar_formatos_fecha(columnas[4]):
+            if not validar_fecha(columnas[4]):
                 columnas[4] = "Unknown"
                 corregidos += 1
 
@@ -102,7 +102,7 @@ if __name__ == '__main__':
             if encontrado:
                 duplicados += 1
 
-                if puntaje(registro) > puntaje(catalogo[encontrado]):
+                if calcular_puntaje(registro) > calcular_puntaje(catalogo[encontrado]):
                     catalogo[encontrado] = registro
             else:
                 catalogo[clave1] = registro
@@ -120,20 +120,25 @@ if __name__ == '__main__':
     with open("report.md", "w", encoding="utf-8") as reporte:
         reporte.write("# Data Quality Report\n\n")
         
-        reporte.write(f"Total input records: {total_entrada}\n")
-        reporte.write(f"Total output records: {len(catalogo)}\n")
-        reporte.write(f"Discarded entries: {descartados}\n")
-        reporte.write(f"Corrected entries: {corregidos}\n")
-        reporte.write(f"Duplicates detected: {duplicados}\n\n")
-        
+        reporte.write(f"Total input records: {total_entrada} \n")
+        reporte.write(f"Total output records: {len(catalogo)} \n")
+        reporte.write(f"Discarded entries: {descartados} \n")
+        reporte.write(f"Corrected entries: {corregidos} \n")
+        reporte.write(f"Duplicates detected: {duplicados} \n\n")
+
         reporte.write("## Deduplication Strategy\n\n")
-        reporte.write("Episodes were considered duplicates when they matched one of the following keys:\n\n")
-        reporte.write("- `(SeriesName_normalized, SeasonNumber, EpisodeNumber)`\n")
-        reporte.write("- `(SeriesName_normalized, 0, EpisodeNumber, EpisodeTitle_normalized)`\n")
-        reporte.write("- `(SeriesName_normalized, SeasonNumber, 0, EpisodeTitle_normalized)`\n\n")
-        reporte.write("Where normalized means: trimmed, collapsed spaces, and lowercased for comparison.\n\n")
-        reporte.write("When duplicates were found, the best record was selected using this priority:\n\n")
-        reporte.write("1. Episodes with valid AirDate over 'Unknown'\n")
-        reporte.write("2. Episodes with a known title over 'Untitled Episode'\n")
-        reporte.write("3. Episodes with valid Season and Episode numbers\n")
-        reporte.write("4. If still tied, the first entry encountered was kept\n")
+        reporte.write("Duplicate episodes are detected using three alternative keys based on normalized fields.\n\n")
+        reporte.write("Once a duplicate is detected, the script selects the best record using a scoring function"
+                      " called `calcular_puntaje`.\n")
+        reporte.write("This function implements the priority rules defined in the specification by assigning"
+                      "a weighted score to each record.\n")
+        reporte.write("The weights reflect the order of importance described in the problem statement.\n\n")
+
+        reporte.write("Scoring criteria:\n\n")
+        reporte.write("- Episodes with a valid AirDate receive the highest priority over those with 'Unknown'.\n")
+        reporte.write("- Episodes with a known title are preferred over those labeled 'Untitled Episode'.\n")
+        reporte.write("- Episodes with valid Season and Episode numbers receive additional priority.\n\n")
+
+        reporte.write("When two duplicate records are found, their scores are compared and the record with the higher"
+                      " score is kept.\n")
+        reporte.write("If both records have the same score, the first occurrence in the dataset is preserved.\n")

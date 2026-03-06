@@ -2,7 +2,7 @@ from collections import Counter
 archivo_texto= "./textoPrueba.txt"
 
 
-def vector_limpio(texto):
+def limpiar_y_contar_palabras(texto):
     texto_limpio = ""
     for caracter in texto:
         if caracter.isalpha() or caracter.isspace():
@@ -17,7 +17,7 @@ def vector_limpio(texto):
 if __name__ == '__main__':
     with open(archivo_texto, 'r', encoding='utf-8') as archivo:
         contenido = archivo.read()
-    contador_palabras = vector_limpio(contenido)
+    contador_palabras = limpiar_y_contar_palabras(contenido)
     diez_frecuentes = contador_palabras[:10]
     for palabra, frecuencia in diez_frecuentes:
         print(f"{palabra}: {frecuencia}")
